@@ -2,8 +2,6 @@ import { profile } from '../data/birthday-config.js'
 import ConfettiAnimation from './confetti-animation.jsx'
 import FloatingBalloons from './floating-balloons.jsx'
 
-const RING_GRADIENT = 'conic-gradient(from 0deg, #00e5c3, #a855f7, #ff4fa1, #ffe066, #ff8c42, #00e5c3)'
-
 // Staggered entrance: each item fades up with increasing delay
 function AnimatedText({ delay, className, style: extraStyle, children, as: Tag = 'p' }) {
   return (
@@ -44,41 +42,28 @@ export default function HeroSection() {
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center text-center px-6 py-20 max-w-2xl">
 
-        {/* Avatar with spinning rainbow ring */}
+        {/* Avatar — single teal glow ring */}
         <AnimatedText delay="0s" as="div" className="mb-10">
-          <div className="relative" style={{ width: 168, height: 168 }}>
-            {/* Spinning gradient ring */}
-            <div
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                inset: -4,
-                borderRadius: '50%',
-                background: RING_GRADIENT,
-                animation: 'spin-ring 3.5s linear infinite',
-              }}
-            />
-            {/* Dark fill to create ring gap */}
-            <div
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                inset: 3,
-                borderRadius: '50%',
-                background: '#0d0d1a',
-              }}
-            />
-            {/* Avatar image */}
+          <div
+            style={{
+              width: 176,
+              height: 176,
+              borderRadius: '50%',
+              padding: 5,
+              border: '2px solid rgba(0, 229, 195, 0.75)',
+              background: '#0d0d1a',
+              animation: 'pulse-avatar-ring 2.8s ease-in-out infinite',
+            }}
+          >
             <img
               src={profile.avatarUrl}
               alt={profile.name}
               style={{
-                position: 'absolute',
-                inset: 7,
-                width: 'calc(100% - 14px)',
-                height: 'calc(100% - 14px)',
+                width: '100%',
+                height: '100%',
                 borderRadius: '50%',
                 objectFit: 'cover',
+                display: 'block',
               }}
             />
           </div>
@@ -87,7 +72,7 @@ export default function HeroSection() {
         {/* Happy Birthday label */}
         <AnimatedText
           delay="0.15s"
-          className="text-accent-pink text-sm font-bold tracking-[0.3em] uppercase mb-3"
+          className="text-accent-teal text-sm font-bold tracking-[0.3em] uppercase mb-3"
         >
           <i className="fa-solid fa-cake-candles" aria-hidden="true" /> Happy Birthday <i className="fa-solid fa-cake-candles" aria-hidden="true" />
         </AnimatedText>
@@ -122,40 +107,25 @@ export default function HeroSection() {
         <div
           style={{
             animation: 'fade-in-up 0.7s cubic-bezier(0.22,1,0.36,1) 0.70s both',
-            position: 'relative',
             width: '100%',
             maxWidth: '32rem',
           }}
         >
-          {/* Pulsing gradient glow behind the card (no spin — avoids spinner look) */}
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: -3,
-              borderRadius: '1.1rem',
-              background: 'linear-gradient(135deg, #00e5c3, #a855f7, #ff4fa1, #ffe066)',
-              filter: 'blur(10px)',
-              animation: 'pulse-glow 3s ease-in-out infinite',
-            }}
-          />
-
-          {/* Glass card */}
+          {/* Single glass card — teal border pulses, no external aura */}
           <div
             style={{
               position: 'relative',
-              zIndex: 1,
               background: 'rgba(255, 255, 255, 0.05)',
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
-              border: '1px solid rgba(255, 255, 255, 0.10)',
+              border: '1px solid rgba(0, 229, 195, 0.30)',
               borderRadius: '1rem',
               padding: '1.75rem 2rem',
-              boxShadow: '0 8px 32px rgba(0,229,195,0.07), inset 0 1px 0 rgba(255,255,255,0.08)',
               overflow: 'hidden',
+              animation: 'pulse-card-border 3s ease-in-out infinite',
             }}
           >
-            {/* Animated sheen sweep — clips to card bounds */}
+            {/* Sheen sweep */}
             <div
               aria-hidden="true"
               style={{ position: 'absolute', inset: 0, overflow: 'hidden', borderRadius: '1rem', pointerEvents: 'none' }}
@@ -166,24 +136,17 @@ export default function HeroSection() {
                   top: 0,
                   bottom: 0,
                   width: '40%',
-                  background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent)',
-                  animation: 'glass-sheen 5s ease-in-out 1.5s infinite',
+                  background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.07), transparent)',
+                  animation: 'glass-sheen 6s ease-in-out 2s infinite',
                 }}
               />
             </div>
 
-            {/* Decorative large quote mark */}
+            {/* Decorative quote marks */}
             <i
               className="fa-solid fa-quote-left"
               aria-hidden="true"
-              style={{
-                position: 'absolute',
-                top: '0.6rem',
-                left: '0.9rem',
-                fontSize: '2.8rem',
-                color: 'rgba(0, 229, 195, 0.18)',
-                lineHeight: 1,
-              }}
+              style={{ position: 'absolute', top: '0.6rem', left: '0.9rem', fontSize: '2.6rem', color: 'rgba(0,229,195,0.15)', lineHeight: 1 }}
             />
 
             {/* Message text */}
@@ -194,18 +157,10 @@ export default function HeroSection() {
               {profile.message}
             </p>
 
-            {/* Closing quote mark */}
             <i
               className="fa-solid fa-quote-right"
               aria-hidden="true"
-              style={{
-                position: 'absolute',
-                bottom: '0.6rem',
-                right: '0.9rem',
-                fontSize: '2.2rem',
-                color: 'rgba(168, 85, 247, 0.18)',
-                lineHeight: 1,
-              }}
+              style={{ position: 'absolute', bottom: '0.6rem', right: '0.9rem', fontSize: '2rem', color: 'rgba(0,229,195,0.12)', lineHeight: 1 }}
             />
           </div>
         </div>

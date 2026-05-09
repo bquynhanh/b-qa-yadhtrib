@@ -75,7 +75,7 @@ export default function ThankYouSection() {
 
         {/* Name + date */}
         <p
-          className="text-accent-pink font-semibold text-lg tracking-wider mb-2"
+          className="text-accent-teal font-semibold text-lg tracking-wider mb-2"
           style={{ animation: 'fade-in-up 0.7s cubic-bezier(0.22,1,0.36,1) 0.4s both' }}
         >
           <i className="fa-solid fa-heart mr-2" aria-hidden="true" />
@@ -105,7 +105,7 @@ export default function ThankYouSection() {
 
         {/* Footer */}
         <footer className="text-white/20 text-xs tracking-widest uppercase">
-          Made with <i className="fa-solid fa-heart text-accent-pink mx-1" aria-hidden="true" /> by ARTTRACK
+          Made with <i className="fa-solid fa-heart text-accent-teal mx-1" aria-hidden="true" /> by ARTTRACK
         </footer>
       </div>
     </section>
