@@ -1,6 +1,47 @@
+import { useState, useEffect } from 'react'
 import { profile } from '../data/birthday-config.js'
 import ConfettiAnimation from './confetti-animation.jsx'
 import FloatingBalloons from './floating-balloons.jsx'
+
+// Counts up from 0 → target over ~1.2s, starting after a 0.6s delay
+function AgeCounter({ age }) {
+  const target = parseInt(age) || 0
+  const [display, setDisplay] = useState(0)
+
+  useEffect(() => {
+    if (!target) return
+    const stepMs = Math.max(60, Math.floor(1200 / target))
+    let interval = null
+
+    const timeout = setTimeout(() => {
+      let current = 0
+      interval = setInterval(() => {
+        current += 1
+        setDisplay(current)
+        if (current >= target) clearInterval(interval)
+      }, stepMs)
+    }, 700)
+
+    return () => {
+      clearTimeout(timeout)
+      if (interval) clearInterval(interval)
+    }
+  }, [target])
+
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <span
+        className="font-pacifico text-accent-teal"
+        style={{ fontSize: 'clamp(4.5rem, 16vw, 7.5rem)', lineHeight: 1, letterSpacing: '-0.02em' }}
+      >
+        {display || (target ? 0 : age)}
+      </span>
+      <span className="text-white/45 text-base italic tracking-widest">
+        years young <span style={{ color: '#ffe066' }}>✦</span>
+      </span>
+    </div>
+  )
+}
 
 // Staggered entrance: each item fades up with increasing delay
 function AnimatedText({ delay, className, style: extraStyle, children, as: Tag = 'p' }) {
@@ -87,12 +128,9 @@ export default function HeroSection() {
           {profile.name}
         </AnimatedText>
 
-        {/* Age */}
-        <AnimatedText
-          delay="0.42s"
-          className="text-accent-yellow text-2xl font-semibold mb-3"
-        >
-          <i className="fa-solid fa-party-popper" aria-hidden="true" /> Turning {profile.age} today!
+        {/* Age — large count-up number */}
+        <AnimatedText delay="0.42s" as="div" className="mb-4">
+          <AgeCounter age={profile.age} />
         </AnimatedText>
 
         {/* Date */}
