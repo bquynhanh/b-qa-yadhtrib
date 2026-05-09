@@ -1,0 +1,212 @@
+@import "tailwindcss";
+
+@theme {
+  --color-accent-teal: #00e5c3;
+  --color-accent-pink: #ff4fa1;
+  --color-accent-yellow: #ffe066;
+  --color-accent-purple: #a855f7;
+  --color-bg-base: #0d0d1a;
+  --color-bg-gallery: #111124;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0d0d1a;
+  overflow-x: hidden;
+}
+
+/* ── Fancy scrollbar ───────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0d1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #00e5c3, #a855f7, #ff4fa1);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #00e5c3, #ff4fa1);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #a855f7 #0d0d1a;
+}
+
+/* ── Balloon float ─────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  33%       { transform: translateY(-18px) rotate(-4deg); }
+  66%       { transform: translateY(-9px) rotate(4deg); }
+}
+
+/* ── Text entrance ─────────────────────────────── */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Avatar ring spin ──────────────────────────── */
+@keyframes spin-ring {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Quote card glow pulse ─────────────────────── */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.18; }
+  50%       { opacity: 0.45; }
+}
+
+/* ── Glass sheen sweep ─────────────────────────── */
+@keyframes glass-sheen {
+  0%   { transform: translateX(-150%) skewX(-12deg); }
+  100% { transform: translateX(450%)  skewX(-12deg); }
+}
+
+/* ── Scroll indicator ──────────────────────────── */
+@keyframes bounce-scroll {
+  0%, 100% { transform: translateY(0); opacity: 0.8; }
+  50%       { transform: translateY(8px); opacity: 0.4; }
+}
+
+/* ── Masonry grid ──────────────────────────────── */
+.masonry-grid {
+  columns: 4;
+  column-gap: 0.75rem;
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .masonry-grid { columns: 2; }
+}
+
+/* ── Photo card hover (portfolio-style) ─────────── */
+.photo-card {
+  cursor: pointer;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+/* Inner wrapper clips zoom overflow.
+   Filter lives HERE (not on img) so it doesn't share
+   a compositor layer with the img transform → no lag. */
+.photo-card-inner {
+  position: relative;
+  overflow: hidden;
+  line-height: 0;
+  filter: grayscale(0.7);
+  transition: filter 0.4s ease;
+  will-change: filter;
+}
+
+.photo-card:hover .photo-card-inner {
+  filter: grayscale(0);
+}
+
+.photo-card-inner img {
+  display: block;
+  width: 100%;
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.photo-card:hover .photo-card-inner img {
+  transform: scale(1.06);
+}
+
+/* Hover overlay — invisible by default */
+.photo-hover-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photo-card:hover .photo-hover-overlay {
+  opacity: 1;
+}
+
+/* Dark vignette rising from bottom */
+.photo-hover-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.60), transparent);
+}
+
+/* Frosted glass expand button */
+.photo-hover-expand {
+  position: relative;
+  z-index: 1;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.9rem;
+  transition: transform 0.22s ease, background 0.22s ease;
+}
+
+.photo-card:hover .photo-hover-expand {
+  transform: scale(1.12);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* ── Skeleton shimmer ──────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 25%,
+    rgba(255, 255, 255, 0.10) 50%,
+    rgba(255, 255, 255, 0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 0.75rem;
+}
+
+/* ── Pacifico display font ─────────────────────── */
+.font-pacifico {
+  font-family: 'Pacifico', cursive;
+}
+
+/* ── Reduce motion ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

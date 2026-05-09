@@ -1,0 +1,12 @@
+# Gitleaks configuration
+# https://github.com/gitleaks/gitleaks
+
+[extend]
+useDefault = true   # inherit all built-in rules
+
+[allowlist]
+description = "Allowlist for known safe values"
+paths = [
+    '''README\.md''',
+    '''CLAUDE\.md''',
+]
