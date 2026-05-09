@@ -12,11 +12,24 @@ export default function GallerySection() {
   const visibleImages = galleryImages.slice(0, visibleCount)
   const hasMore = visibleCount < galleryImages.length
 
-  // Lightbox navigates within ALL loaded images (visibleImages)
-  const handleNext  = useCallback(() => setActiveIndex((i) => (i + 1) % visibleImages.length), [visibleImages.length])
-  const handlePrev  = useCallback(() => setActiveIndex((i) => (i - 1 + visibleImages.length) % visibleImages.length), [visibleImages.length])
-  const handleClose = useCallback(() => setActiveIndex(null), [])
+  // Next: auto-loads next batch when at last visible image; no wrap at absolute end
+  const handleNext = useCallback(() => {
+    const isLast = activeIndex === visibleImages.length - 1
+    if (isLast && hasMore) {
+      setVisibleCount((c) => Math.min(c + BATCH_SIZE, galleryImages.length))
+      setActiveIndex(activeIndex + 1) // React 18 batches both — index valid on next render
+    } else if (!isLast) {
+      setActiveIndex(activeIndex + 1)
+    }
+    // isLast && !hasMore → do nothing (no wrap)
+  }, [activeIndex, visibleImages.length, hasMore])
 
+  // Prev: no wrap at beginning
+  const handlePrev = useCallback(() => {
+    if (activeIndex > 0) setActiveIndex(activeIndex - 1)
+  }, [activeIndex])
+
+  const handleClose    = useCallback(() => setActiveIndex(null), [])
   const handleLoadMore = () => setVisibleCount((c) => Math.min(c + BATCH_SIZE, galleryImages.length))
 
   return (
@@ -56,7 +69,7 @@ export default function GallerySection() {
           <>
             <MasonryGrid images={visibleImages} onImageClick={setActiveIndex} />
 
-            {/* Load More button */}
+            {/* Load More */}
             {hasMore && (
               <div className="flex flex-col items-center mt-12 gap-3">
                 <p className="text-white/30 text-sm tracking-wider">
@@ -72,7 +85,6 @@ export default function GallerySection() {
               </div>
             )}
 
-            {/* All loaded indicator */}
             {!hasMore && galleryImages.length > BATCH_SIZE && (
               <p className="text-center text-white/20 text-sm mt-10 tracking-wider">
                 All {galleryImages.length} photos loaded
@@ -88,6 +100,8 @@ export default function GallerySection() {
         onClose={handleClose}
         onNext={handleNext}
         onPrev={handlePrev}
+        hasMore={hasMore}
+        totalCount={galleryImages.length}
       />
     </section>
   )
